@@ -1,0 +1,12 @@
+C:\Users\Mohsin.Khan\Source\Repos\ODataV4_Course\AirVinyl.DataAccessLayer\bin\Debug\AirVinyl.DataAccessLayer.dll.config
+C:\Users\Mohsin.Khan\Source\Repos\ODataV4_Course\AirVinyl.DataAccessLayer\bin\Debug\AirVinyl.DataAccessLayer.dll
+C:\Users\Mohsin.Khan\Source\Repos\ODataV4_Course\AirVinyl.DataAccessLayer\bin\Debug\AirVinyl.DataAccessLayer.pdb
+C:\Users\Mohsin.Khan\Source\Repos\ODataV4_Course\AirVinyl.DataAccessLayer\bin\Debug\AirVinyl.Model.dll
+C:\Users\Mohsin.Khan\Source\Repos\ODataV4_Course\AirVinyl.DataAccessLayer\bin\Debug\EntityFramework.dll
+C:\Users\Mohsin.Khan\Source\Repos\ODataV4_Course\AirVinyl.DataAccessLayer\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Mohsin.Khan\Source\Repos\ODataV4_Course\AirVinyl.DataAccessLayer\bin\Debug\AirVinyl.Model.pdb
+C:\Users\Mohsin.Khan\Source\Repos\ODataV4_Course\AirVinyl.DataAccessLayer\bin\Debug\EntityFramework.xml
+C:\Users\Mohsin.Khan\Source\Repos\ODataV4_Course\AirVinyl.DataAccessLayer\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Mohsin.Khan\Source\Repos\ODataV4_Course\AirVinyl.DataAccessLayer\obj\Debug\AirVinyl.DataAccessLayer.csprojResolveAssemblyReference.cache
+C:\Users\Mohsin.Khan\Source\Repos\ODataV4_Course\AirVinyl.DataAccessLayer\obj\Debug\AirVinyl.DataAccessLayer.dll
+C:\Users\Mohsin.Khan\Source\Repos\ODataV4_Course\AirVinyl.DataAccessLayer\obj\Debug\AirVinyl.DataAccessLayer.pdb
