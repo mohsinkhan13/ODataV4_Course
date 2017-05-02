@@ -7,7 +7,7 @@ namespace AirVinyl.DataAccessLayer
 {
 
     // Note: to avoid recreation of the DB, use DropCreateDatabaseIfModelChanges<AirVinylDbContext>  
-    public class AirVinylDBInitializer : DropCreateDatabaseAlways<AirVinylDbContext> 
+    public class AirVinylDBInitializer : DropCreateDatabaseIfModelChanges<AirVinylDbContext> 
     {
         protected override void Seed(AirVinylDbContext context)
         {

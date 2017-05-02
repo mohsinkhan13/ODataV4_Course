@@ -5,13 +5,12 @@ using System.Net.Http;
 using System.Reflection;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.OData.Routing;
 using System.Web.Http.Routing;
 using System.Web.OData;
 using System.Web.OData.Extensions;
 using System.Web.OData.Routing;
 
-namespace AirVinyl.API.Helpers
+namespace AirVinyl.Api.Helpers
 {
     /// <summary>
     /// OData Helper methods - slightly adjusted from OData helpers provided by Microsoft
@@ -58,55 +57,55 @@ namespace AirVinyl.API.Helpers
         }
 
 
-        ///// <summary>
-        ///// Helper method to get the odata path for an arbitrary odata uri.
-        ///// </summary>
-        ///// <param name="request">The request instance in current context</param>
-        ///// <param name="uri">OData uri</param>
-        ///// <returns>The parsed odata path</returns>
-        //public static ODataPath CreateODataPath(this HttpRequestMessage request, Uri uri)
-        //{
-        //    if (uri == null)
-        //    {
-        //        throw new ArgumentNullException("uri");
-        //    }
+        /// <summary>
+        /// Helper method to get the odata path for an arbitrary odata uri.
+        /// </summary>
+        /// <param name="request">The request instance in current context</param>
+        /// <param name="uri">OData uri</param>
+        /// <returns>The parsed odata path</returns>
+        public static ODataPath CreateODataPath(this HttpRequestMessage request, Uri uri)
+        {
+            if (uri == null)
+            {
+                throw new ArgumentNullException("uri");
+            }
 
-        //    var newRequest = new HttpRequestMessage(HttpMethod.Get, uri);
-        //    var route = request.GetRouteData().Route;
+            var newRequest = new HttpRequestMessage(HttpMethod.Get, uri);
+            var route = request.GetRouteData().Route;
 
-        //    var newRoute = new HttpRoute(
-        //        route.RouteTemplate,
-        //        new HttpRouteValueDictionary(route.Defaults),
-        //        new HttpRouteValueDictionary(route.Constraints),
-        //        new HttpRouteValueDictionary(route.DataTokens),
-        //        route.Handler);
+            var newRoute = new HttpRoute(
+                route.RouteTemplate,
+                new HttpRouteValueDictionary(route.Defaults),
+                new HttpRouteValueDictionary(route.Constraints),
+                new HttpRouteValueDictionary(route.DataTokens),
+                route.Handler);
 
-        //    var routeData = newRoute.GetRouteData(request.GetConfiguration().VirtualPathRoot, newRequest);
-        //    if (routeData == null)
-        //    {
-        //        throw new InvalidOperationException("This link is not a valid OData link.");
-        //    }
+            var routeData = newRoute.GetRouteData(request.GetConfiguration().VirtualPathRoot, newRequest);
+            if (routeData == null)
+            {
+                throw new InvalidOperationException("This link is not a valid OData link.");
+            }
 
-        //    return newRequest.ODataProperties().Path;
-        //}
+            return newRequest.ODataProperties().Path;
+        }
 
-        //public static TKey GetKeyValue<TKey>(this HttpRequestMessage request, Uri uri)
-        //{
-        //    if (uri == null)
-        //    {
-        //        throw new ArgumentNullException("uri");
-        //    }
+        public static TKey GetKeyValue<TKey>(this HttpRequestMessage request, Uri uri)
+        {
+            if (uri == null)
+            {
+                throw new ArgumentNullException("uri");
+            }
 
-        //    //get the odata path Ex: ~/entityset/key/$links/navigation
-        //    var odataPath = request.CreateODataPath(uri);
-        //    var keySegment = odataPath.Segments.OfType<KeyValuePathSegment>().LastOrDefault();
-        //    if (keySegment == null)
-        //    {
-        //        throw new InvalidOperationException("This link does not contain a key.");
-        //    }
+            //get the odata path Ex: ~/entityset/key/$links/navigation
+            var odataPath = request.CreateODataPath(uri);
+            var keySegment = odataPath.Segments.OfType<System.Web.Http.OData.Routing.KeyValuePathSegment>().LastOrDefault();
+            if (keySegment == null)
+            {
+                throw new InvalidOperationException("This link does not contain a key.");
+            }
 
-        //    var value = ODataUriUtils.ConvertFromUriLiteral(keySegment.Value, ODataVersion.V4);
-        //    return (TKey)value;
-        //}
+            var value = ODataUriUtils.ConvertFromUriLiteral(keySegment.Value, ODataVersion.V4);
+            return (TKey)value;
+        }
     }
 }
