@@ -1,4 +1,4 @@
-﻿using Microsoft.OData;
+﻿using Microsoft.OData.Core.UriParser;
 using System;
 using System.Linq;
 using System.Net.Http;
@@ -98,13 +98,13 @@ namespace AirVinyl.Api.Helpers
 
             //get the odata path Ex: ~/entityset/key/$links/navigation
             var odataPath = request.CreateODataPath(uri);
-            var keySegment = odataPath.Segments.OfType<System.Web.Http.OData.Routing.KeyValuePathSegment>().LastOrDefault();
+            var keySegment = odataPath.Segments.OfType<KeyValuePathSegment>().LastOrDefault();
             if (keySegment == null)
             {
                 throw new InvalidOperationException("This link does not contain a key.");
             }
 
-            var value = ODataUriUtils.ConvertFromUriLiteral(keySegment.Value, ODataVersion.V4);
+            var value = ODataUriUtils.ConvertFromUriLiteral(keySegment.Value, Microsoft.OData.Core.ODataVersion.V4);
             return (TKey)value;
         }
     }

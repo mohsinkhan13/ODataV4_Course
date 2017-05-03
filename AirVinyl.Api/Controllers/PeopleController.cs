@@ -189,6 +189,7 @@ namespace AirVinyl.Api.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        [HttpPost]
         [ODataRoute("People({key})/Friends/$ref")]
         public IHttpActionResult CreateLinkToFriend([FromODataUri]int key,[FromBody] Uri link)
         {
@@ -200,12 +201,90 @@ namespace AirVinyl.Api.Controllers
                 return NotFound();
             }
 
-            var keyOfFriendToAdd = this.Request.GetKeyValue<int>(link);
+            var keyOfFriendToAdd = Request.GetKeyValue<int>(link);
 
             if(currentPerson.Friends.Any(x=>x.PersonId == keyOfFriendToAdd))
             {
                 return BadRequest("Person already associated");
             }
+
+            var friendToLink = _context.People.FirstOrDefault(x => x.PersonId == keyOfFriendToAdd);
+            if(friendToLink == null)
+            {
+                return NotFound();
+            }
+
+            currentPerson.Friends.Add(friendToLink);
+            _context.SaveChanges();
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        [HttpPut]
+        [ODataRoute("People({key})/Friends({relatedKey})/$ref")]
+        public IHttpActionResult UpdateLinkToFriend([FromODataUri]int key,
+            [FromODataUri]int relatedKey,[FromBody] Uri link)
+        {
+            //find current person from key passed
+            var currentPerson = _context.People
+                .Include("Friends")
+                .FirstOrDefault(p => p.PersonId == key);
+            if (currentPerson == null)
+            {
+                return NotFound();
+            }
+
+            //find friend to be replaced from related key passed
+            var friendToBeRemoved = _context.People.FirstOrDefault(x => x.PersonId == relatedKey);
+            if (friendToBeRemoved == null)
+            {
+                return NotFound();
+            }
+
+            //get id of the new friend to be added - from the odata link in the body
+            // and check if already associated with the current person
+            var keyOfNewFriendToAdd = Request.GetKeyValue<int>(link);
+
+            if (currentPerson.Friends.Any(x => x.PersonId == keyOfNewFriendToAdd))
+            {
+                return BadRequest("Person already associated");
+            }
+
+            //get new friend
+            var newFriendToBeAdded = _context.People.FirstOrDefault(x => x.PersonId == keyOfNewFriendToAdd);
+
+            //remove old friend and add new friend
+            currentPerson.Friends.Remove(friendToBeRemoved);
+            currentPerson.Friends.Add(newFriendToBeAdded);
+            _context.SaveChanges();
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        [HttpDelete]
+        [ODataRoute("People({key})/Friends({relatedKey})/$ref")]
+        public IHttpActionResult DeleteLinkToFriend([FromODataUri]int key,
+            [FromODataUri]int relatedKey)
+        {
+            //find current person from key passed
+            var currentPerson = _context.People
+                .Include("Friends")
+                .FirstOrDefault(p => p.PersonId == key);
+            if (currentPerson == null)
+            {
+                return NotFound();
+            }
+
+            //find friend to be deleted from related key passed
+            var friendToBeRemoved = _context.People.FirstOrDefault(x => x.PersonId == relatedKey);
+            if (friendToBeRemoved == null)
+            {
+                return NotFound();
+            }
+
+            //remove friend 
+            currentPerson.Friends.Remove(friendToBeRemoved);
+            _context.SaveChanges();
 
             return StatusCode(HttpStatusCode.NoContent);
         }
@@ -214,6 +293,7 @@ namespace AirVinyl.Api.Controllers
         {
             _context.Dispose();
             base.Dispose(disposing);
+            // 
         }
     }
 }
