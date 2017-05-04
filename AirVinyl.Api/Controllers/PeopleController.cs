@@ -15,17 +15,22 @@ namespace AirVinyl.Api.Controllers
     {
         private AirVinylDbContext _context = new AirVinylDbContext();
 
+        [EnableQuery(PageSize =5)]
         public IHttpActionResult Get()
         {
             return Ok(_context.People);
         }
+
+        [EnableQuery]
         public IHttpActionResult Get([FromODataUri]int key)
         {
-            var person = _context.People.FirstOrDefault(x => x.PersonId == key);
-            if (person == null)
+            var person = _context.People.Where(x => x.PersonId == key);
+            if(!person.Any())
+            {
                 return NotFound();
+            }
 
-            return Ok(person);
+            return Ok(SingleResult.Create(person));
         }
 
         [HttpGet]
@@ -55,14 +60,13 @@ namespace AirVinyl.Api.Controllers
 
         [HttpGet]
         [ODataRoute("People({key})/Friends")]
-        [ODataRoute("People({key})/VinylRecords")]
         public IHttpActionResult GetPersonCollectionProperty([FromODataUri] int key)
         {
             var collectionPropertyToGet = Url.Request.RequestUri.Segments.Last();
             var person = _context.People.Include(collectionPropertyToGet)
                 .FirstOrDefault(x => x.PersonId == key);
 
-            if(person == null)
+            if (person == null)
             {
                 return NotFound();
             }
@@ -70,7 +74,25 @@ namespace AirVinyl.Api.Controllers
             var collectionPropertyValue = person.GetValue(collectionPropertyToGet);
 
             return this.CreateOkHttpActionResult(collectionPropertyValue);
-            
+
+        }
+
+        [HttpGet]
+        [ODataRoute("People({key})/VinylRecords")]
+        [EnableQuery]
+        public IHttpActionResult GetVinylRecordsCollectionProperty([FromODataUri] int key)
+        {
+            var person = _context.People.FirstOrDefault(x=>x.PersonId == key);
+
+            if (person == null)
+            {
+                return NotFound();
+            }
+
+            var records = _context.VinylRecords.Where(v => v.Person.PersonId == key);
+
+            return Ok(records);
+
         }
 
         [HttpGet]

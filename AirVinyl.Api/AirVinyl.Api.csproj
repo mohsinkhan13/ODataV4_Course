@@ -129,10 +129,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\AirVinyl.DataAccessLayer.AirVinylDbContext.mdf" />
-    <Content Include="App_Data\AirVinyl.DataAccessLayer.AirVinylDbContext_log.ldf">
-      <DependentUpon>AirVinyl.DataAccessLayer.AirVinylDbContext.mdf</DependentUpon>
-    </Content>
     <Content Include="Global.asax" />
     <Content Include="Index.html" />
     <Content Include="Web.config" />
@@ -157,6 +153,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
